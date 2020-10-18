@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom'
+import { UserContext } from '../context/user'
+import loginUser from '../strapi/loginUser'
+import registerUser from '../strapi/registerUser'
 
 const Login = () => {
+    const { userLogin, alert, showAlert } = React.useContext(UserContext)
+
     const [isMember, setIsMember] = useState(true)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('default')
 
-    const isEmpty = !email || !password || !username
+    const history = useHistory()
+
+    const isEmpty = !email || !password || !username || alert.show
 
     const toggleMember = ()=>{
         setIsMember((prevMember)=>{
@@ -14,6 +22,38 @@ const Login = () => {
             isMember ? setUsername('default') : setUsername('')
             return isMember;
         })
+    }
+
+    const handleSubmit = async (e)=>{
+        e.preventDefault();
+        showAlert({
+            msg: "accessing user data. please wait..."
+        })
+
+        let response;
+        if(isMember){
+            response = await loginUser({ email, password })
+        }else{
+            response = await registerUser({ email, password, username })
+        }
+
+        if(response){
+            const {
+                jwt: token,
+                user: { username }
+            } = response.data;
+            const newUser = { username, token }
+            userLogin(newUser)
+            showAlert({
+                msg: `you are logged in : ${username}. shop away my friend`
+            })
+            history.push('/products')
+        }else{
+            showAlert({
+                msg: "there was an error. please try again...",
+                type: "danger"
+            })
+        }
     }
 
     return (
@@ -68,7 +108,7 @@ const Login = () => {
                     <button
                         type="submit"
                         className="btn btn-block btn-primary"
-                        onClick={()=>{}}
+                        onClick={handleSubmit}
                     >
                         submit
                     </button>

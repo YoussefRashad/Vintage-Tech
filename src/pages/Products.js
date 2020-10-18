@@ -5,7 +5,7 @@ import { ProductContext } from '../context/products'
 const Products = () => {
     const { loading } = React.useContext(ProductContext)
 
-    if(loading.show){
+    if(loading){
         return <Loading />
     }
     return (
