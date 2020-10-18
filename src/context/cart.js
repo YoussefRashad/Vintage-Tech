@@ -1,15 +1,20 @@
 import React from 'react'
-import localCart from '../utils/localCart'
+// import localCart from '../utils/localCart'
 
 export const CartContext = React.createContext()
 
+function getCartfromLocalStorage() {
+    return localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : []
+}
+
 export default function CartProvider({ children }) {
-    const [cart, setCart] = React.useState(localCart)
+    const [cart, setCart] = React.useState(getCartfromLocalStorage())
     const [cartItems, setCartItems] = React.useState(0)
     const [total, setTotal] = React.useState(0)
 
     React.useEffect(()=>{
-
+        // local storage
+        localStorage.setItem('cart', JSON.stringify(cart))
         // cart items
         let newCartItems = cart.reduce((total, cartItem)=>{
             return total += cartItem.amount
