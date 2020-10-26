@@ -14,6 +14,8 @@ import Products from './pages/Products'
 // import Components
 import Header from './components/Header'
 import Alert from './components/Alert'
+import PrivateRoute from './components/PrivateRoute'
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -39,9 +41,9 @@ export default function App() {
           path="/products/:id" 
           children={<ProductDetails></ProductDetails>}
         ></Route>
-        <Route exact path="/checkout">
+        <PrivateRoute exact path="/checkout">
           <Checkout />
-        </Route>
+        </PrivateRoute>
         <Route path="*">
           <Error />
         </Route>
