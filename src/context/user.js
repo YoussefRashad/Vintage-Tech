@@ -14,6 +14,14 @@ const UserProvider = ({ children }) => {
         msg: "",
         type: "success"
     })
+    const [height, setHeight] = React.useState(0)
+
+    React.useEffect(()=>{
+        window.addEventListener("scroll", ()=>{
+            setHeight(window.pageYOffset);
+        })
+        return ()=> window.removeEventListener("scroll",()=>{});
+    })
 
     const showAlert = ({ msg, type = "success" }) => {
         console.log(type);
@@ -42,7 +50,8 @@ const UserProvider = ({ children }) => {
             userLogout,
             alert,
             showAlert,
-            hideAlert
+            hideAlert,
+            height
         }}>
             {children}
         </UserContext.Provider>

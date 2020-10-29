@@ -15,12 +15,14 @@ import Products from './pages/Products'
 import Header from './components/Header'
 import Alert from './components/Alert'
 import PrivateRoute from './components/PrivateRoute'
+import Scroll from './components/ScrollButton'
 
 export default function App() {
   return (
     <BrowserRouter>
       <Header />
       <Alert />
+      <Scroll />
       <Switch>
         <Route exact path="/">
           <Home />
