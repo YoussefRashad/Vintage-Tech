@@ -24,6 +24,7 @@ export default function ProductProvider({ children }) {
 setProducts(localProducts)
 const featured = featuredProducts(localProducts)
             setFeatured(featured)
+setLoading(false)
         return () => {}
     }, [])
 
